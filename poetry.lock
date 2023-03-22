@@ -745,7 +745,7 @@ typing-extensions = ">=4.3.0"
 name = "pyyaml"
 version = "6.0"
 description = "YAML parser and emitter for Python"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -864,6 +864,25 @@ docs = ["docutils", "enum-tools[sphinx]", "m2r2", "mistune (<2.0.0)", "pygments"
 ext = ["sanic-ext"]
 http3 = ["aioquic"]
 test = ["bandit", "beautifulsoup4", "black", "chardet (>=3.0.0,<4.0.0)", "coverage", "docutils", "flake8", "isort (>=5.0.0)", "mypy (>=0.901,<0.910)", "pygments", "pytest (>=7.1.0,<7.2.0)", "pytest-benchmark", "pytest-sanic", "sanic-testing (>=22.9.0)", "slotscheck (>=0.8.0,<1)", "types-ujson", "uvicorn (<0.15.0)"]
+
+[[package]]
+name = "sanic-ext"
+version = "22.12.0"
+description = "Extend your Sanic installation with some core functionality."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "sanic-ext-22.12.0.tar.gz", hash = "sha256:f7e2d37d6d2656370ca321a66098fa3510ca523b3ece67862d8ef26ab44e70cc"},
+    {file = "sanic_ext-22.12.0-py3-none-any.whl", hash = "sha256:a090d2ae083fc81747beb3320dcac5cc796515a1be560ea7bc4c27aca378d490"},
+]
+
+[package.dependencies]
+pyyaml = ">=3.0.0"
+
+[package.extras]
+dev = ["Jinja2", "black (>=21.4b2)", "coverage", "flake8 (>=3.7.7)", "isort (>=5.0.0)", "pytest", "pytest-asyncio", "pytest-cov", "sanic-testing (>=22.9.0)", "tox"]
+test = ["Jinja2", "coverage", "pytest", "pytest-asyncio", "pytest-cov", "sanic-testing (>=22.9.0)", "tox"]
 
 [[package]]
 name = "sanic-routing"
@@ -1173,4 +1192,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.10"
-content-hash = "9694c9e7c322f404638ddc776a800862d4cd16851dac25b08720551286d08366"
+content-hash = "d431c068fcf2bd4d88bba0fcf8c332970ecf1b0eddc60eda9ba2a0f632874a7e"

@@ -8,6 +8,7 @@ readme = "README.org"
 [tool.poetry.dependencies]
 python = "~3.10"
 sanic = "^22.12.0"
+sanic-ext = "^22.12.0"
 
 
 [tool.poetry.group.dev.dependencies]
