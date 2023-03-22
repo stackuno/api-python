@@ -6,7 +6,7 @@ authors = ["David Asabina <david@asabina.de>"]
 readme = "README.org"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "~3.10"
 sanic = "^22.12.0"
 
 
