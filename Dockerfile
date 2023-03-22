@@ -19,7 +19,7 @@ RUN set -x; \
     python -m venv ${POETRY_HOME} && \
     ${POETRY_HOME}/bin/pip install poetry==${POETRY_VERSION} && \
     ${POETRY_HOME}/bin/poetry --version && \
-    chmod -R a+x ${POETRY_HOME}/bin
+    chmod -R a+rwx ${POETRY_HOME}
 
 ENV PATH="/opt/poetry/bin:$PATH"
 
