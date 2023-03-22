@@ -1,0 +1,10 @@
+.venv
+.bashrc
+.direnv
+.envrc
+.git
+.homedir
+*.mk
+Makefile
+*.nix
+flake.lock
