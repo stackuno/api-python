@@ -14,6 +14,7 @@ sanic = "^22.12.0"
 black = "^23.1.0"
 ruff = "^0.0.257"
 pytype = "^2023.3.13"
+pytest = "^7.2.2"
 
 [build-system]
 requires = ["poetry-core"]
