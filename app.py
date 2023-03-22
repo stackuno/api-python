@@ -27,6 +27,17 @@ class ItemModel(BaseModel):
         Response(
             {"application/json": ItemModel}, description="The created item", status=200
         ),
+        Response(
+            {
+                "application/json": {
+                    "title": "Error",
+                    "type": "object",
+                    "properties": {"message": {"title": "Message", "type": "string"}},
+                }
+            },
+            description="The error response",
+            status=400,
+        ),
     ],
 )
 async def post_items(_: Request) -> HTTPResponse:
