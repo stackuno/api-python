@@ -14,6 +14,12 @@ import os
 # TODO: Rename the service into something more descriptive
 api = Sanic("service-python-template")
 
+api.ext.openapi.describe(
+    "Template API",
+    description="This is just a demo, but is should *almost* provide all the answers!",
+    version="0.1.0",  # because this is alpha
+)
+
 
 class ItemModel(BaseModel):
     id: str = Field(description="identifier of item", example="xyz123")
