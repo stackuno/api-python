@@ -18,6 +18,12 @@ make bash
 
    Within this bash shell you can execute all the commands you need =poetry run python whatever=, etc.
 
+3. Run the app in development mode:
+
+   #+begin_src bash
+poetry run sanic app.api --debug
+   #+end_src
+
 ** Using the Docker development container
 
 The Docker development container can simplify your developer experience (DX) by providing:
