@@ -39,6 +39,7 @@ class ItemModel(BaseModel):
             status=400,
         ),
     ],
+    tag="Items",
 )
 async def post_items(_: Request) -> HTTPResponse:
     """Item creation handler
@@ -50,6 +51,26 @@ async def post_items(_: Request) -> HTTPResponse:
 
 
 @api.get("/items")
+@openapi.definition(
+    response=Response(
+        {
+            "application/json": {
+                "title": "Items",
+                "type": "object",
+                "properties": {
+                    "object": {"title": "Object type", "type": "string"},
+                    "url": {"title": "Canonical URL", "type": "string"},
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {"type": "string"},
+                    },
+                },
+            }
+        }
+    ),
+    tag="Items",
+)
 async def get_items(_: Request) -> HTTPResponse:
     return empty()
 
