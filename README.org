@@ -1,0 +1,5 @@
+#+title: Python Service Template
+
+The objective of this repo is to provide a baseline or template for Python services. Copy files from this repo as you please to start another project.
+
+* Usage
