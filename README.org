@@ -3,3 +3,119 @@
 The objective of this repo is to provide a baseline or template for Python services. Copy files from this repo as you please to start another project.
 
 * Usage
+
+1. Build the development image by running
+
+   #+begin_src bash
+make image/dev
+   #+end_src
+
+2. Enter a Bash shell in a development container by running
+
+   #+begin_src bash
+make bash
+   #+end_src
+
+   Within this bash shell you can execute all the commands you need =poetry run python whatever=, etc.
+
+** Using the Docker development container
+
+The Docker development container can simplify your developer experience (DX) by providing:
+
+1. closer parity between your dev env and production as we will be shipping containers, eventually
+2. removing the headache of getting all tools on your workstation (not managed by the python package manager Poetry) aligned with the rest of the development team (again parity)
+3. simplifying the jump towards using docker-compose to test your app against other services that it may depend on
+
+*** Custom parameters
+
+The Makefile parameters can be set by modifying file:parameters.mk or by setting your private customizations in file:private.mk.
+
+The =DOCKER_PRIVATE_ARGS= variable is used in the Makefile to pass env vars into the container. You override what this variable contains by setting the following into your file:private.mk:
+
+#+begin_src makefile
+DOCKER_PRIVATE_ARGS = \
+	-e "APP_VARIABLE_A=$(shell echo secret-a)" \
+	-e "APP_VARIABLE_B=$(shell echo parameter-b)" \
+	-e "APP_VARIABLE_C=$(shell echo value-c)"
+#+end_src
+
+*** Customizing Bash environment
+
+For the ease of use, you can tweak your bash environment by defining file:.homedir/.bashrc. The following is a bashrc that does the following:
+
+1. configures coloring for the prompt (red when previous command failed, green when previous command succeeded)
+2. if =VIRTUAL_ENV= is defined, spin up venv if not already there and activate
+3. upgrade pip to specified version (in file:parameters.mk) unless we're in a Nix shell (where we manage dependencies through Nix)
+4. load file:.homedir/.bashrc-personal if present
+
+#+begin_src bash
+# ~/.bashrc: executed by bash(1) for non-login shells.
+
+# You may uncomment the following lines if you want `ls' to be colorized:
+# export LS_OPTIONS='--color=auto'
+# eval "`dircolors`"
+# alias ls='ls $LS_OPTIONS'
+# alias ll='ls $LS_OPTIONS -l'
+# alias l='ls $LS_OPTIONS -lA'
+#
+# Some more alias to avoid making mistakes:
+# alias rm='rm -i'
+# alias cp='cp -i'
+# alias mv='mv -i'
+
+EDITOR=vim
+
+PROMPT_RESET="\e[0m"
+
+PROMPT_GREEN="\e[32m"
+PROMPT_LIGHTBLUE="\e[94m"
+PROMPT_LIGHTGREEN="\e[92m"
+PROMPT_LIGHTRED="\e[91m"
+PROMPT_LIGHTYELLOW="\e[93m"
+PROMPT_RED="\e[31m"
+
+PROMPT_UNDERLINE="\e[4m"
+PROMPT_UNDERLINE_RESET="\e[24m"
+
+PROMPT_COMMAND=build_prompt
+PROMPT_CURSOR=">>"
+
+build_prompt() {
+    if [ $? -eq 0 ]; then
+        PS1="${PROMPT_LIGHTGREEN}${PROMPT_CURSOR}${PROMPT_RESET} "
+    else
+        PS1="${PROMPT_LIGHTRED}${PROMPT_CURSOR}${PROMPT_RESET} "
+    fi
+}
+
+export PS2="${PROMPT_CURSOR} "
+
+# Create venv if not already created
+if [[ -z "$VIRTUAL_ENV" ]]; then
+  echo -e "${PROMPT_LIGHTYELLOW}Not loading a virtual env${COLOR_RESET}"
+else
+  if [[ ! (-d ${VIRTUAL_ENV} && -f ${VIRTUAL_ENV}/bin/activate) ]]; then
+    python -m venv ${VIRTUAL_ENV}
+
+    source ${VIRTUAL_ENV}/bin/activate
+  else
+    echo -e "${PROMPT_LIGHTBLUE}Using previously created venv at ${COLOR_UNDERLINE}${VIRTUAL_ENV}${COLOR_RESET}"
+  fi
+fi
+
+# https://docs.python.org/3/tutorial/venv.html#managing-packages-with-pip
+if [[ -z "$IN_NIX_SHELL" ]]; then
+  pip install --index-url ${PIP_ORIGIN} --upgrade pip==${PIP_VERSION}
+else
+  echo -e "${PROMPT_LIGHTYELLOW}Not calling ${COLOR_UNDERLINE}pip install --upgrade pip==${PIP_VERSION}${COLOR_UNDERLINE_RESET} inside of a Nix shell${COLOR_RESET}"
+fi
+
+# Load personal Bash config from ./.bashrc-personal. if available
+if [[ -f ~/.bashrc-personal ]]; then
+  source ~/.bashrc-personal
+else
+  echo -e "${PROMPT_LIGHTYELLOW}No personal bashrc found at ${COLOR_UNDERLINE}~/.bashrc-personal${COLOR_RESET}"
+fi
+#+end_src
+
+You can keep the standard .bashrc as listed above and use the .bashrc-personal file to configure the Bash shell as you please.
