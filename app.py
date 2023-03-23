@@ -17,6 +17,27 @@ import os
 # TODO: Rename the service into something more descriptive
 api = Sanic("service-python-template")
 
+APP_PROTO = os.getenv("PROTOCOL", "http")
+APP_HOST = os.getenv("HOST", "localhost")
+APP_PORT = int(os.getenv("PORT", 8000))
+APP_PROXY_AUTH = os.getenv("PROXY_AUTH", "NONE")
+
+api.ext.openapi.raw(
+    {
+        "servers": [
+            {
+                "url": f"{APP_PROTO}://{APP_HOST}:{APP_PORT}",
+            }
+        ],
+    }
+)
+
+if APP_PROXY_AUTH == "JWT":
+    api.ext.openapi.add_security_scheme(
+        "token", "http", scheme="bearer", bearer_format="JWT"
+    )
+
+
 api.ext.openapi.describe(
     "Template API",
     description="This is just a demo, but is should *almost* provide all the answers!",
@@ -24,8 +45,10 @@ api.ext.openapi.describe(
     terms="https://example.org/terms",
 )
 
-api.ext.openapi.add_security_scheme(
-    "token", "http", scheme="bearer", bearer_format="JWT"
+api.ext.openapi.contact(
+    "Example API Ops",
+    url="env.example.org",
+    email="api@example.org",
 )
 
 
