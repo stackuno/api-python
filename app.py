@@ -6,6 +6,8 @@ from sanic.log import logger
 from sanic_ext import openapi
 from sanic_ext.extensions.openapi.definitions import RequestBody, Response
 
+from uuid import UUID
+
 from pydantic import Field
 from pydantic.dataclasses import dataclass
 
@@ -63,7 +65,7 @@ async def post_items(_: Request) -> HTTPResponse:
     return empty()
 
 
-@api.get("/items")
+@api.get("/items/<item_id:uuid>")
 @openapi.definition(
     response=Response(
         {
@@ -85,7 +87,8 @@ async def post_items(_: Request) -> HTTPResponse:
     tag="Items",
     secured={"token": []},
 )
-async def get_items(_: Request) -> HTTPResponse:
+async def get_item(_: Request, item_id: UUID) -> HTTPResponse:
+    logger.info(f"item_id: {item_id}")
     return empty()
 
 
