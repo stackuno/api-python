@@ -30,17 +30,26 @@ api.ext.openapi.add_security_scheme(
 
 
 @dataclass
-class ItemModel:
+class ItemData:
+    name: str = Field(example="Something fun")
+
+
+@dataclass
+class ItemId:
     id: str = Field(description="identifier of item", example="xyz123")
-    name: str = "Something fun"
+
+
+@dataclass
+class Item(ItemId, ItemData):
+    pass
 
 
 @api.post("/items")
 @openapi.definition(
-    body=RequestBody({"application/json": ItemModel}, required=True),
+    body=RequestBody({"application/json": ItemData}, required=True),
     response=[
         Response(
-            {"application/json": ItemModel}, description="The created item", status=200
+            {"application/json": Item}, description="The created item", status=200
         ),
         Response(
             {
