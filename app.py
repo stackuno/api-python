@@ -6,8 +6,9 @@ from sanic.log import logger
 from sanic_ext import openapi
 from sanic_ext.extensions.openapi.definitions import RequestBody, Response
 
-# https://github.com/google/pytype/issues/1105
-from pydantic import BaseModel, Field  # pytype: disable=import-error
+from pydantic import Field
+from pydantic.dataclasses import dataclass
+
 
 import os
 
@@ -25,9 +26,10 @@ api.ext.openapi.add_security_scheme(
 )
 
 
-class ItemModel(BaseModel):
+@dataclass
+class ItemModel:
     id: str = Field(description="identifier of item", example="xyz123")
-    name: str
+    name: str = "Something fun"
 
 
 @api.post("/items")
