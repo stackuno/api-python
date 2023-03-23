@@ -67,6 +67,12 @@ class Item(ItemId, ItemData):
     pass
 
 
+api.ext.openapi.tag(
+    name="Items",
+    description="The base entity type that we deal with",
+)
+
+
 @api.post("/items")
 @openapi.definition(
     body=RequestBody({"application/json": ItemData}, required=True),
