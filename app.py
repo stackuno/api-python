@@ -20,6 +20,10 @@ api.ext.openapi.describe(
     version="0.1.0",  # because this is alpha
 )
 
+api.ext.openapi.add_security_scheme(
+    "token", "http", scheme="bearer", bearer_format="JWT"
+)
+
 
 class ItemModel(BaseModel):
     id: str = Field(description="identifier of item", example="xyz123")
@@ -46,6 +50,7 @@ class ItemModel(BaseModel):
         ),
     ],
     tag="Items",
+    secured={"token": []},
 )
 async def post_items(_: Request) -> HTTPResponse:
     """Item creation handler
@@ -76,6 +81,7 @@ async def post_items(_: Request) -> HTTPResponse:
         }
     ),
     tag="Items",
+    secured={"token": []},
 )
 async def get_items(_: Request) -> HTTPResponse:
     return empty()
