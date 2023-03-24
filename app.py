@@ -138,4 +138,4 @@ async def get_health(_: Request) -> HTTPResponse:
 
 
 if __name__ == "__main__":
-    api.run(host="0.0.0.0", port=int(os.getenv("PORT", 3000)))
+    api.run(host="0.0.0.0", port=APP_PORT)
