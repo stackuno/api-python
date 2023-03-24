@@ -42,6 +42,18 @@ poetry run pytype .
 poetry run sanic app.api --debug
       #+end_src
 
+   5. Examining the API docs
+
+      The API docs will be populated at:
+      - http://localhost:8000/docs/redoc
+      - http://localhost:8000/docs/swagger
+      - http://localhost:8000/docs/openapi.json
+
+      See https://sanic.dev/en/plugins/sanic-ext/openapi/ui.html#config-options for more information regarding the Sanic OpenAPI setup.
+
+      Refer to https://swagger.io/specification/#data-types for a listing of the supported datatypes.
+
+
 ** Using the Docker development container
 
 The Docker development container can simplify your developer experience (DX) by providing:
