@@ -112,7 +112,6 @@ async def post_item(_: Request) -> HTTPResponse:
     tag="Items",
     secured={"token": []},
 )
-# TODO: Check compat between spec and implementation
 async def get_item(_: Request, item_id: UUID) -> HTTPResponse:
     logger.info(f"item_id: {item_id}")
     return empty()

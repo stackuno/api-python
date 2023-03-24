@@ -143,3 +143,9 @@ fi
 #+end_src
 
 You can keep the standard .bashrc as listed above and use the .bashrc-personal file to configure the Bash shell as you please.
+
+* Work
+
+** TODO Configure testing of openapi spec against implementation
+
+We want to be able to run the test suite and verify the spec against the implementation in order to support a design-first development approach.
