@@ -8,9 +8,8 @@ from sanic_ext.extensions.openapi.definitions import RequestBody, Response
 
 from uuid import UUID
 
-from pydantic import Field
-from pydantic.dataclasses import dataclass
-
+from pydantic import BaseModel, Field
+from pydantic.dataclasses import dataclass as pydataclass
 
 import os
 
@@ -52,19 +51,22 @@ api.ext.openapi.contact(
 )
 
 
-@dataclass
-class ItemData:
+class ItemData(BaseModel):
     name: str = Field(example="Something fun")
 
 
-@dataclass
-class ItemId:
+class ItemId(BaseModel):
     id: str = Field(description="identifier of item", example="xyz123")
 
 
-@dataclass
 class Item(ItemId, ItemData):
     pass
+
+
+@pydataclass
+class ItemList(BaseModel):
+    has_more: bool
+    members: list[Item]
 
 
 api.ext.openapi.tag(
@@ -95,7 +97,7 @@ api.ext.openapi.tag(
     tag="Items",
     secured={"token": []},
 )
-async def post_items(_: Request) -> HTTPResponse:
+async def post_item(_: Request) -> HTTPResponse:
     """Item creation handler
 
     Creates the *item* and returns the created payload along with the generated
@@ -106,28 +108,25 @@ async def post_items(_: Request) -> HTTPResponse:
 
 @api.get("/items/<item_id:uuid>")
 @openapi.definition(
+    response=Response({"application/json": openapi.Component(Item)}),
+    tag="Items",
+    secured={"token": []},
+)
+# TODO: Check compat between spec and implementation
+async def get_item(_: Request, item_id: UUID) -> HTTPResponse:
+    logger.info(f"item_id: {item_id}")
+    return empty()
+
+
+@api.get("/items/")
+@openapi.definition(
     response=Response(
-        {
-            "application/json": {
-                "title": "Items",
-                "type": "object",
-                "properties": {
-                    "object": {"title": "Object type", "type": "string"},
-                    "url": {"title": "Canonical URL", "type": "string"},
-                    "data": {
-                        "title": "Data",
-                        "type": "array",
-                        "items": {"type": "string"},
-                    },
-                },
-            }
-        }
+        {"application/json": openapi.Component(ItemList)}, description="List of items"
     ),
     tag="Items",
     secured={"token": []},
 )
-async def get_item(_: Request, item_id: UUID) -> HTTPResponse:
-    logger.info(f"item_id: {item_id}")
+async def get_items(_: Request) -> HTTPResponse:
     return empty()
 
 
