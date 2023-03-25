@@ -39,7 +39,7 @@ poetry run pytype .
    4. Running the code
 
       #+begin_src bash
-poetry run sanic app.api --debug
+poetry run sanic service.api --debug
       #+end_src
 
    5. Examining the API docs
