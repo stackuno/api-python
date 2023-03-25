@@ -39,8 +39,20 @@ poetry run pytype .
    4. Running the code
 
       #+begin_src bash
-poetry run sanic app.api --debug
+poetry run sanic service.api --debug
       #+end_src
+
+   5. Examining the API docs
+
+      The API docs will be populated at:
+      - http://localhost:8000/docs/redoc
+      - http://localhost:8000/docs/swagger
+      - http://localhost:8000/docs/openapi.json
+
+      See https://sanic.dev/en/plugins/sanic-ext/openapi/ui.html#config-options for more information regarding the Sanic OpenAPI setup.
+
+      Refer to https://swagger.io/specification/#data-types for a listing of the supported datatypes.
+
 
 ** Using the Docker development container
 
@@ -143,3 +155,9 @@ fi
 #+end_src
 
 You can keep the standard .bashrc as listed above and use the .bashrc-personal file to configure the Bash shell as you please.
+
+* Work
+
+** TODO Configure testing of openapi spec against implementation
+
+We want to be able to run the test suite and verify the spec against the implementation in order to support a design-first development approach.
