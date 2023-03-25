@@ -8,8 +8,7 @@ from sanic_ext.extensions.openapi.definitions import RequestBody, Response
 
 from uuid import UUID
 
-from pydantic import BaseModel, Field
-from pydantic.dataclasses import dataclass as pydataclass
+import pydantic
 
 import os
 
@@ -51,20 +50,19 @@ api.ext.openapi.contact(
 )
 
 
-class ItemData(BaseModel):
-    name: str = Field(example="Something fun")
+class ItemData(pydantic.BaseModel):
+    name: str = pydantic.Field(example="Something fun")
 
 
-class ItemId(BaseModel):
-    id: str = Field(description="identifier of item", example="xyz123")
+class ItemId(pydantic.BaseModel):
+    id: str = pydantic.Field(description="identifier of item", example="xyz123")
 
 
 class Item(ItemId, ItemData):
     pass
 
 
-@pydataclass
-class ItemList(BaseModel):
+class ItemList(pydantic.BaseModel):
     has_more: bool
     members: list[Item]
 
