@@ -16,7 +16,31 @@ make image/dev
 make bash
    #+end_src
 
-   Within this bash shell you can execute all the commands you need =poetry run python whatever=, etc.
+   Within this bash shell you can execute all the commands you need such as:
+
+   1. Linting the code
+
+      #+begin_src bash
+poetry run ruff .
+      #+end_src
+
+   2. Formatting the code
+
+      #+begin_src bash
+poetry run black .
+      #+end_src
+
+   3. Typechecking the code
+
+      #+begin_src bash
+poetry run pytype .
+      #+end_src
+
+   4. Running the code
+
+      #+begin_src bash
+poetry run sanic app.api --debug
+      #+end_src
 
 ** Using the Docker development container
 
